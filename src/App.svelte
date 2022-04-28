@@ -1,5 +1,6 @@
 <script>
 	import Modal from './Modal.svelte';
+	import AddPersonForm from './AddPersonForm.svelte';
 
 	let showModal = false;
 
@@ -23,12 +24,20 @@
 	const handleClick = (id) => {
 		people = people.filter((person) => person.id !== id);
 	};
+
+	const handleAddPerson = (e) => {
+		const person = e.detail;
+		people = [...people, person];
+		showModal = false;
+	};
 </script>
 
-<Modal message="Hey, I am a prop" isPromo={true} {showModal} on:click={toggleModal} />
+<Modal isPromo={true} {showModal} on:click={toggleModal}>
+	<AddPersonForm on:addPerson={handleAddPerson} />
+</Modal>
 
 <main>
-	<button on:click={toggleModal}>Open Modal</button>
+	<button on:click|once={toggleModal}>Open Modal</button>
 	<div>
 		{#each people as person (person.id)}
 			<div>
